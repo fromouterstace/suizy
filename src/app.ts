@@ -1,7 +1,7 @@
-import Fastify, { type FastifyInstance } from "fastify";
+import fastify, { type FastifyInstance } from "fastify";
 
 export function build_app(): FastifyInstance {
-  return Fastify({
+  return fastify({
     logger: false,
   });
 }

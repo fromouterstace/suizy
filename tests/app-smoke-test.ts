@@ -3,7 +3,7 @@ import { test } from "node:test";
 
 import { build_app } from "../src/app.js";
 
-test("Fastify application becomes ready and closes cleanly", async () => {
+void test("Fastify application becomes ready and closes cleanly", async () => {
   const app = build_app();
 
   await app.ready();
