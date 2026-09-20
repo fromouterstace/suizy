@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.upm/
+
+# Build and test output
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local runtime output
+*.log
+*.pid
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+attached_assets/
+
+# Agent-local workspace state
+.agents/
+.cache/
+.local/
+
+# Sensitive local artifacts
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.db
+*.har
+*.pcap
