@@ -1,29 +1,34 @@
 import { build_app } from "./app.js";
+import { ConfigurationError, load_config } from "./config.js";
 
-const app = build_app();
-const port = Number.parseInt(process.env.PORT ?? "3000", 10);
-
-async function start_server(): Promise<void> {
+async function main(): Promise<void> {
+  const config = load_config(process.env);
+  const app = build_app();
+  for (const signal of ["SIGINT", "SIGTERM"] as const) {
+    process.once(signal, () => {
+      void app.close().catch(() => {
+        process.stderr.write("Shutdown failed.\n");
+        process.exitCode = 1;
+      });
+    });
+  }
   try {
     await app.listen({
       host: "0.0.0.0",
-      port,
+      port: config.port,
     });
-  } catch (error: unknown) {
-    app.log.error(error);
+  } catch {
+    process.stderr.write("Startup failed: could not listen on the configured port.\n");
+    await app.close();
     process.exitCode = 1;
   }
 }
 
-async function stop_server(signal: NodeJS.Signals): Promise<void> {
-  app.log.info({ signal }, "stopping server");
-  await app.close();
+try {
+  await main();
+} catch (error: unknown) {
+  process.stderr.write(
+    error instanceof ConfigurationError ? `${error.message}\n` : "Startup failed.\n",
+  );
+  process.exitCode = 1;
 }
-
-for (const signal of ["SIGINT", "SIGTERM"] as const) {
-  process.once(signal, () => {
-    void stop_server(signal);
-  });
-}
-
-await start_server();

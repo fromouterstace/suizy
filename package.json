@@ -22,11 +22,12 @@
     "lint:fix": "eslint --fix --max-warnings 0 src tests scripts eslint.config.mjs",
     "smoke": "tsx --test tests/app-smoke-test.ts",
     "start": "node dist/src/server.js",
-    "test": "pnpm run check:test-filenames && pnpm run smoke",
+    "test": "pnpm run check:test-filenames && tsx --test tests/*-test.ts",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "fastify": "5.12.5"
+    "fastify": "5.12.5",
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
